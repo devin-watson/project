@@ -8,9 +8,14 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@aws-amplify/core": "^3.2.6",
     "@react-native-community/masked-view": "0.1.6",
+    "@react-native-community/netinfo": "^5.8.0",
     "@react-navigation/native": "^5.2.1",
     "@react-navigation/stack": "^5.2.16",
+    "amazon-cognito-identity-js": "^4.2.3",
+    "aws-amplify": "^3.0.10",
+    "aws-amplify-react-native": "^4.1.1",
     "expo": "~37.0.3",
     "react": "~16.9.0",
     "react-dom": "~16.9.0",

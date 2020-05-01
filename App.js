@@ -2,10 +2,14 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Login from './Login';
+import Amplify from 'aws-amplify';
+import amplify from './aws-exports';
+
+Amplify.configure(amplify);
 
 const Stack = createStackNavigator();
 
-export default function App() {
+function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Login" headerMode="none">
@@ -14,3 +18,5 @@ export default function App() {
     </NavigationContainer>
   );
 }
+
+export default App;

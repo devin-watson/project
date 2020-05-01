@@ -1,22 +1,64 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { StyleSheet, Text, View, TextInput } from 'react-native';
+import { Auth } from 'aws-amplify';
 
 export default function Login() {
+    const [email, setEmail] = useState(null);
+    const [password, setPassword] = useState(false);
     const passwordInputRef = useRef(null);
-    const onSubmitEditing = () => {
+
+    async function signUp() {
+        try {
+            const user = await Auth.signUp({
+                username: email,
+                password,
+            })
+            console.log({user});
+        } catch(error) {
+            console.log({ error });
+        }
+    }
+
+    const onEditEmail = () => {       
         passwordInputRef.current.focus();
+    }
+    const onEmailChange = value => {
+        setEmail(value);
+    }
+    const onPasswordChange = value => {
+        setPassword(value)
+    }
+    const onCompleteForm = () => {
+        signUp();
     }
     return (
         <View style={styles.container}>
             <View style={styles.form}>
-                <Text style={styles.heading1}>Login</Text>
+                <Text style={styles.heading1}>Sign up</Text>
                 <View style={styles.formFieldGroup}>
                     <Text>Email</Text>
-                    <TextInput autoCapitalize="none" style={input.root} keyboardType="email-address" keyboardAppearance="dark" returnKeyType="next" onSubmitEditing={onSubmitEditing} />
+                    <TextInput 
+                        style={input.root}
+                        autoCapitalize="none"
+                        keyboardType="email-address" 
+                        keyboardAppearance="dark" 
+                        returnKeyType="next" 
+                        onSubmitEditing={onEditEmail}
+                        onChangeText={onEmailChange}
+                    />
                 </View>
                 <View style={styles.formFieldGroup}>
                     <Text>Password</Text>
-                    <TextInput ref={passwordInputRef} autoCapitalize="none" style={input.root} secureTextEntry keyboardAppearance="dark" returnKeyType="go" />
+                    <TextInput 
+                        ref={passwordInputRef} 
+                        onChangeText={onPasswordChange} 
+                        autoCapitalize="none" 
+                        style={input.root} 
+                        secureTextEntry 
+                        keyboardAppearance="dark" 
+                        returnKeyType="go" 
+                        onSubmitEditing={onCompleteForm}
+                    />
                 </View>
             </View>
         </View>
