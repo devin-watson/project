@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { StyleSheet, Text, View, TextInput, Keyboard, TouchableWithoutFeedback, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
 import { Auth } from 'aws-amplify';
+import { Ionicons } from '@expo/vector-icons';
 
 const DismissKeyboard = ({ children }) => (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}> 
@@ -13,7 +14,6 @@ export default function Signup({ navigation }) {
     const [step, setStep] = useState(1);
     const [email, setEmail] = useState(null);
     const [password, setPassword] = useState(false);
-    const [name, setName] = useState(false);
     const [code, setCode] = useState(false);
 
     const passwordInputRef = useRef(null);
@@ -24,7 +24,6 @@ export default function Signup({ navigation }) {
             const data = await Auth.signUp({
                 username: email,
                 password,
-                attributes: { name }
             });
             if (data.user) {
                 setStep(2);
@@ -69,23 +68,9 @@ export default function Signup({ navigation }) {
             <View style={styles.container}>
                 <KeyboardAvoidingView style={styles.formWrapper} behavior={Platform.OS == "ios" ? "padding" : "height"}>
                     <View style={styles.form}>
-                        <Text style={styles.heading1}>Sign up</Text>
+                        <Text style={styles.heading1}>Welcome back!</Text>
                         {step === 1 ? (
                             <>
-                                <View style={styles.formFieldGroup}>
-                                    <Text>Name</Text>
-                                    <TextInput 
-                                        style={input.root}
-                                        autoCapitalize="words"
-                                        keyboardAppearance="dark" 
-                                        returnKeyType="next" 
-                                        onSubmitEditing={() => { emailRef.current.focus() }}
-                                        onChangeText={value => { setName(value) }}
-                                        editable={editable}
-                                        enablesReturnKeyAutomatically
-                                        selectionColor="#456665"
-                                    />
-                                </View>
                                 <View style={styles.formFieldGroup}>
                                     <Text>Email</Text>
                                     <TextInput 
@@ -140,7 +125,15 @@ export default function Signup({ navigation }) {
                             onPress={step === 1 ? handleSignUp : handleConfirmSignUp}
                         >
                             <View style={styles.button}>
-                                <Text style={styles.buttonText}>Send</Text>
+                                <Text style={styles.buttonText}>Sign up</Text>
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity 
+                            disabled={!editable} 
+                            onPress={() => navigation.navigate('Signin')}
+                        >
+                            <View style={styles.secondaryButton}>
+                                <Text style={styles.secondaryButtonText}>Sign in</Text>
                             </View>
                         </TouchableOpacity>
                     </View>
@@ -177,14 +170,30 @@ const styles = StyleSheet.create({
     button: {
         backgroundColor: '#456665',
         width: '100%',
+        height: 60,
         alignSelf: 'center',
-        paddingVertical: 24,
-        paddingHorizontal: 24,
         marginTop: 24,
         borderRadius: 50,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     buttonText: {
         color: '#fff',
+        textAlign: 'center',
+        fontSize: 16,
+        fontWeight: '500',
+    },
+    secondaryButton: {
+        width: '100%',
+        height: 60,
+        alignSelf: 'center',
+        marginTop: 24,
+        borderRadius: 50,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    secondaryButtonText: {
+        color: '#456665',
         textAlign: 'center',
         fontSize: 16,
         fontWeight: '500',
