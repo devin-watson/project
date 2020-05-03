@@ -1,14 +1,6 @@
 {
-	"auth": {
-		"projectdcb1c98f": {
-			"service": "Cognito",
-			"providerPlugin": "awscloudformation",
-			"dependsOn": [],
-			"customAuth": false
-		}
-	},
 	"api": {
-		"project": {
+		"simpletodo": {
 			"service": "AppSync",
 			"providerPlugin": "awscloudformation",
 			"output": {
@@ -17,12 +9,20 @@
 					"defaultAuthentication": {
 						"authenticationType": "API_KEY",
 						"apiKeyConfig": {
-							"description": "project",
-							"apiKeyExpirationDays": "30"
+							"description": "todo",
+							"apiKeyExpirationDays": 7
 						}
 					}
 				}
 			}
+		}
+	},
+	"auth": {
+		"simpletodo27c2e04d": {
+			"service": "Cognito",
+			"providerPlugin": "awscloudformation",
+			"dependsOn": [],
+			"customAuth": false
 		}
 	}
 }

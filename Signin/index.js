@@ -10,28 +10,34 @@ import Media from './media';
 
 const heading = {
     new: 'Create an account',
-    existing: 'Welcome back!'
+    existing: 'Welcome back!',
+    confirmation: 'We\'ve emailed you a confirmation code'
 };
 const secondaryButtonPre = {
     new: 'Already have an account?',
-    existing: 'You\'re new?'
+    existing: 'You\'re new?',
+    confirmation: 'Already have an account?'
 };
 const secondaryButtonLabel = {
     new: 'Log in',
-    existing: 'Create a new account'
+    existing: 'Create a new account',
+    confirmation: 'Log in'
 };
 
 const primaryButtonLabel = {
     new: 'Sign up',
-    existing: 'Log in'
+    existing: 'Log in',
+    confirmation: 'Confirm'
 };
 
 const INITIAL_FORM_Y_AXIS = 180;
 
-export default function Signin() {
+export default function Signin({ navigation }) {
     const [ account, setAccount ] = useState('existing');
     const [ status, setStatus ] = useState(null);
+    const [ error, setError ] = useState(false);
     const [ confirmPassword, setConfirmPassword ] = useState(false);
+    const [ code, setCode ] = useState(false);
     const [ email, setEmail ] = useState(null);
     const [ name, setName ] = useState(null);
     const [ password, setPassword ] = useState(false);
@@ -42,10 +48,14 @@ export default function Signin() {
     async function signIn() {
         try {
             const user = await Auth.signIn(email, password);
-            console.log(user);
+            if (user.username) {
+                navigation.navigate('Welcome');
+            } else {
+                setError('Please check your email or password and try again');
+            }
         } catch(error) {
             console.info({ error });
-            setStatus('error')
+            setError('Please check your email or password and try again');
         }
     }
     async function signUp() {
@@ -58,32 +68,46 @@ export default function Signin() {
                     name,
                 }
             });
-            console.log(user);
+            if (user.user) {
+                if (!user.userConfirmed) {
+                    setStatus('confirmation');
+                    setAccount('confirmation');
+                } else {
+                    setError('You already have an account. Please log in instead.')
+                }
+            } else {
+                setError('Please make sure your details are correct and try again');
+            }
         } catch(error) {
             console.info({ error });
-            setStatus('error')
+            setError('Please check your email or password and try again');
         }
     }
 
-    const handleSignIn = () => {
-        signIn();
-    }
-    const handleSignUp = () => {
-        if (password === confirmPassword) {
-            signUp();
+    async function confirmSignUp() {
+        try {
+         const confirmationStatus = await Auth.confirmSignUp(email, code);
+         if (confirmationStatus === 'SUCCESS') {
+            navigation.navigate('Welcome');
+         }
+        } catch (error) {
+            setError('Please check your confirmation code and try again');
         }
     }
 
     const handleSubmitForm = () => {
-        setStatus('loading');
         if (account === 'new') {
-            handleSignUp();
+            if (password === confirmPassword) {
+                signUp();
+            }
+        } else if (account === 'existing') {
+            signIn();
         } else {
-            handleSignIn();
+            confirmSignUp();
         }
     }
 
-    const editable = status !== 'loading';
+    const editable = true;
     const animationValues = useTodoAnimation();
 
     const formYAxis = useRef(new Animated.Value(INITIAL_FORM_Y_AXIS)).current;
@@ -118,7 +142,7 @@ export default function Signin() {
                             <View style={styles.marginBottomMediumPlus}>
                                 <HeadingOne customStyles={styles.marginBottomLarge}>{heading[account]}</HeadingOne>
                                 {
-                                    account === 'existing'
+                                    account !== 'new'
                                     ? null
                                     : (
                                         <>
@@ -155,23 +179,28 @@ export default function Signin() {
                                         selectionColor='#7F8C72'
                                     />
                                 </View>
-                                <View style={styles.formFieldGroup}>
-                                    <Text style={styles.formLabel}>Password</Text>
-                                    <TextInput 
-                                        ref={passwordInputRef} 
-                                        onChangeText={value => { setPassword(value) }} 
-                                        autoCapitalize="none" 
-                                        style={input.root} 
-                                        secureTextEntry 
-                                        keyboardAppearance="dark" 
-                                        returnKeyType="done" 
-                                        editable={editable}
-                                        enablesReturnKeyAutomatically
-                                        selectionColor='#7F8C72'
-                                    />
-                                </View>
                                 {
-                                    account === 'existing'
+                                    account !== 'confirmation'
+                                    ?
+                                    <View style={styles.formFieldGroup}>
+                                        <Text style={styles.formLabel}>Password</Text>
+                                        <TextInput 
+                                            ref={passwordInputRef} 
+                                            onChangeText={value => { setPassword(value) }} 
+                                            autoCapitalize="none" 
+                                            style={input.root} 
+                                            secureTextEntry 
+                                            keyboardAppearance="dark" 
+                                            returnKeyType="done" 
+                                            editable={editable}
+                                            enablesReturnKeyAutomatically
+                                            selectionColor='#7F8C72'
+                                        />
+                                    </View>
+                                    : null
+                                }
+                                {
+                                    account !== 'new'
                                     ? null
                                     : (
                                         <>
@@ -192,6 +221,24 @@ export default function Signin() {
                                             </View>
                                         </>
                                     )
+                                }
+                                {
+                                    account === 'confirmation'
+                                    ?
+                                    <View style={styles.formFieldGroup}>
+                                        <Text style={styles.formLabel}>Confirmation code</Text>
+                                        <TextInput 
+                                            style={input.root}
+                                            autoCapitalize="none"
+                                            keyboardAppearance="dark" 
+                                            returnKeyType="go" 
+                                            onChangeText={value => { setCode(value) }}
+                                            editable={editable}
+                                            enablesReturnKeyAutomatically
+                                            selectionColor="#456665"
+                                        />
+                                    </View>
+                                    : null
                                 }
                             </View>
                         </Animated.View>

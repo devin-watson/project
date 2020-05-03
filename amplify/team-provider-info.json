@@ -1,19 +1,19 @@
 {
-    "primary": {
+    "main": {
         "awscloudformation": {
-            "AuthRoleName": "amplify-project-primary-204056-authRole",
-            "UnauthRoleArn": "arn:aws:iam::204425937269:role/amplify-project-primary-204056-unauthRole",
-            "AuthRoleArn": "arn:aws:iam::204425937269:role/amplify-project-primary-204056-authRole",
+            "AuthRoleName": "amplify-simpletodo-main-164641-authRole",
+            "UnauthRoleArn": "arn:aws:iam::204425937269:role/amplify-simpletodo-main-164641-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::204425937269:role/amplify-simpletodo-main-164641-authRole",
             "Region": "ap-southeast-2",
-            "DeploymentBucketName": "amplify-project-primary-204056-deployment",
-            "UnauthRoleName": "amplify-project-primary-204056-unauthRole",
-            "StackName": "amplify-project-primary-204056",
-            "StackId": "arn:aws:cloudformation:ap-southeast-2:204425937269:stack/amplify-project-primary-204056/47992490-8b98-11ea-9dbf-02d4e302d85c",
-            "AmplifyAppId": "d1yy7rwx3vzomc"
+            "DeploymentBucketName": "amplify-simpletodo-main-164641-deployment",
+            "UnauthRoleName": "amplify-simpletodo-main-164641-unauthRole",
+            "StackName": "amplify-simpletodo-main-164641",
+            "StackId": "arn:aws:cloudformation:ap-southeast-2:204425937269:stack/amplify-simpletodo-main-164641/da7b7ed0-8d09-11ea-96c4-0612d36ca8cc",
+            "AmplifyAppId": "d10vybp69qwzwn"
         },
         "categories": {
             "auth": {
-                "projectdcb1c98f": {}
+                "simpletodo27c2e04d": {}
             }
         }
     }

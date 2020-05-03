@@ -12,21 +12,15 @@ Amplify.configure(amplify);
 const Stack = createStackNavigator();
 
 function App() {
-	const isSignedIn = false;
 	return (
 		<NavigationContainer>
 			<Stack.Navigator initialRouteName="Signin" headerMode="none">
 				{
-					isSignedIn ? (
-						<>
-							<Stack.Screen name="Welcome" component={Welcome} />
-						</>
-					) : (
-						<>
-							<Stack.Screen name="Signin" component={Signin} />
-							<Stack.Screen name="Signup" component={Signup} />
-						</>
-					)
+					<>
+						<Stack.Screen name="Welcome" component={Welcome} />
+						<Stack.Screen name="Signin" component={Signin} />
+						<Stack.Screen name="Signup" component={Signup} />
+					</>
 				}
 			</Stack.Navigator>
 		</NavigationContainer>
