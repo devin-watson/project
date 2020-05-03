@@ -2,7 +2,7 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Signup from './Signup';
-import Signin from './Signin';
+import Signin from './Signin/index';
 import Amplify from 'aws-amplify';
 import amplify from './aws-exports';
 import Welcome from './Welcome';
